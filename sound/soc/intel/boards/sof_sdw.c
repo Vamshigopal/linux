@@ -201,6 +201,16 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 					SOF_RT715_DAI_ID_FIX |
 					SOF_SDW_PCH_DMIC),
 	},
+	{
+                .callback = sof_sdw_quirk_cb,
+                .matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "Brya"),
+                },
+                .driver_data = (void *)(SOF_SDW_TGL_HDMI |
+                                       SOF_SDW_PCH_DMIC |
+                                       SOF_SDW_FOUR_SPK),
+        },
 	{}
 };
 
