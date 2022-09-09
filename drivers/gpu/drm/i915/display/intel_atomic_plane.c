@@ -592,6 +592,12 @@ int intel_plane_atomic_check_with_state(const struct intel_crtc_state *old_crtc_
 	if (new_plane_state->uapi.visible || old_plane_state->uapi.visible)
 		new_crtc_state->update_planes |= BIT(plane->id);
 
+	if (new_crtc_state->uapi.async_flip && plane->async_flip)
+		new_crtc_state->async_flip_planes |= BIT(plane->id);
+	else if (new_plane_state->uapi.visible != old_plane_state->uapi.visible ||
+		 new_plane_state->uapi.fb != old_plane_state->uapi.fb)
+		new_crtc_state->async_flip_planes &= ~BIT(plane->id);
+
 	if (new_plane_state->uapi.visible &&
 	    intel_format_info_is_yuv_semiplanar(fb->format, fb->modifier)) {
 		new_crtc_state->data_rate_y[plane->id] =
